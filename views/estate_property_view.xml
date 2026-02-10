@@ -218,7 +218,7 @@ for rec in records:
 
                 <field name="expected_price" type="measure"/>
                 <field name="selling_price" type="measure"/>
-                <field name="best_price" type="measure"/>
+                <field name="best_offer" type="measure"/>
                 
             </graph>
         </field>

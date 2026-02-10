@@ -147,6 +147,18 @@ for rec in records:
         </field>
     </record>
 
+    <record id="ir_cron_cancel_properties" model="ir.cron">
+        <field name="name">Cancel Expired Properties</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_cancel_properties()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <!--<field name="nextcall" eval="(datetime.now() + relativedelta(days=1)).strftime('%Y-%m-%d 15:00:00')" />-->
+        <field name="nextcall" eval="(datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d 14:00:00')"/>
+        <field name="priority">5</field>
+
+    </record>
 
 
 

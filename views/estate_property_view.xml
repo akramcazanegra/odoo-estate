@@ -200,7 +200,7 @@ for rec in records:
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <pivot string="Property Analysis">
-                <field name="selling_price" type="measure">
+                <field name="selling_price" type="measure"/>
                 <field name="property_type_id" type="row"/>
             
             </pivot>

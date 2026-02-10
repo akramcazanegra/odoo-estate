@@ -1,0 +1,157 @@
+
+<odoo>
+
+    <!-- SEARCH VIEW -->
+    <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"
+                    string="Name, Postcode or Description"
+                    filter_domain="['|','|' ,('name', 'ilike', self), ('postcode', 'ilike', self),('description', 'ilike', self)]"
+                    />
+
+                <filter name="filter_state_new"
+                        string="New"
+                        domain="[('state', '=', 'new')]"/>
+                        
+                <filter name="group_by_postcode"
+                        string="Postcode"
+                        context="{'group_by': 'postcode'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- FORM VIEW -->
+    <record id="estate_property_form_view" model="ir.ui.view">
+        <field name="name">estate.property.view.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+                 <form>
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="new,accepted,sold,canceled"/>
+                        <button name="action_cancel"
+                                        type="object"
+                                        string="Cancel"
+                                        class="btn btn-danger"
+                                        invisible="state in ('sold', 'canceled')"
+                                        />
+                        <button name="action_sold"
+                                        type="object"
+                                        string="Sold"
+                                        class="btn btn-success"
+                                        invisible="state != 'accepted'"
+                                        />
+                    </header> 
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="property_type_id"/>
+                                <!--<field name="state"/>-->
+                            </group>
+
+                            <group>
+                                <field name="postcode"/>
+                                <field name="date_availability"/>
+                            </group>
+                            <!--<group>
+                                <button name="action_cancel"
+                                        type="object"
+                                        string="Cancel"
+                                        class="btn btn-danger"
+                                        />
+                            </group>-->
+                        
+
+                            <group string="Prices">
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                                <field name="best_offer" readonly="1"/>
+                            </group>
+
+                            <group string="Areas">
+                                <field name="living_area"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                                <field name="total_area" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Offers">
+                                <field name="offer_ids"
+                                    context="{
+                                                'form_view_ref': 'estate_property_offer_form_view',
+                                                'tree_view_ref': 'estate_property_offer_list_view'
+                                             }"
+                                  />
+                            </page>
+                            <page string="Tags">
+                                <field name="tag_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+
+        </field>
+    </record>
+
+    <!-- LIST VIEW (بدل TREE) -->
+    <record id="estate_property_list_view" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list
+                decoration-danger="state in ('canceled', 'sold')" 
+                decoration-success="state == 'accepted'"
+                decoration-info="state == 'received'"
+            > 
+                <field name="name"/>
+                <field name="property_type_id"/>
+                <field name="postcode"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="living_area"/>
+                <field name="garden_area"/>
+                <field name="garden_orientation"/>
+                <field name="total_area"/>
+                <field name="date_availability" />
+                <field name="best_offer" readonly="1"/>
+                <field name="state"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="action_estate_property" model="ir.actions.act_window">
+        <field name="name">Estate Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="estate_property_search_view"/>
+        <field name="context">{'search_default_filter_state_new': True,}</field>
+    </record>
+
+    <record id="action_update_property_status_direct" model="ir.actions.server">
+        <field name="name">Update Status (Created Today)</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="state">code</field>
+        <field name="code">
+today = datetime.date.today()
+for rec in records:
+    if rec.create_date and rec.create_date.date() == today:
+        rec.write({'state': 'received'})
+        </field>
+    </record>
+
+
+
+
+    
+
+
+
+</odoo>

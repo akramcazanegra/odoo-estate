@@ -1,0 +1,87 @@
+<odoo>
+    <data>
+        <record id="estate_property_offer_list_view" model="ir.ui.view">
+            <field name="name">estate.property.offer.view.list</field>
+            <field name="model">estate.property.offer</field>
+            <field name="arch" type="xml">
+                <list  editable="bottom">  
+                    <field name="price"/>
+                    <field name="status" />
+                    <field name="partner_id"/>
+                    <field name="validity" />
+                    <field name="date_deadline"/>
+                    <!-- Accept / Refuse buttons -->
+                    <button name="action_accept"
+                            type="object"
+                            string="Accept"
+                            class="btn btn-success"
+                            invisible="status != 'new'"
+                            />
+                    <button name="action_refuse"
+                            type="object"
+                            string="Refuse"
+                            class="btn-warning"
+                            invisible="status != 'new'"
+                            />
+                  <!--  <button name="action_accept" invisible="status in ('accepted', 'refused')" type="object" string="Accept"/>
+                    <button name="action_refuse" invisible="status in ('accepted', 'refused')" type="object" string="Refuse"/>-->
+                </list>
+            
+            
+            </field>
+        
+        </record>
+
+
+        <record id="estate_property_offer_form_view"  model="ir.ui.view">
+            <field name="name">estate.property_offer.view.form</field>
+            <field name="model">estate.property.offer</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="price"/>
+                            <field name="status"/>
+                            <field name="partner_id"/>
+                            <field name="validity"/>
+                            <field name="date_deadline"/>
+                        </group>
+                        
+                    </sheet>
+                    <header>
+                            <!-- Use 'invisible' attribute with domain directly -->
+                            <button name="action_accept" type="object" string="Accept"
+                                class="btn-success"
+                                invisible="[(status,'!=','new')]"/>
+                            <button name="action_refuse" type="object" string="Refuse"
+                                class="btn-danger"
+                                invisible="[(status,'!=','new')]"/>
+                    </header>
+                </form>
+            </field>
+        </record>
+
+
+
+
+
+
+
+        <!--<record id="action_estate_property_offer" model="ir.actions.act_window">
+            <field name="name">Offers</field>
+            <field name="res_model">estate.property.offer</field>
+            <field name="view_mode">list,form</field>-->
+
+
+        <record id="action_estate_property_offer" model="ir.actions.act_window">
+            <field name="name">Create Offer</field>
+            <field name="res_model">estate.property.offer</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="estate_property_offer_form_view"/>
+            <field name="target">current</field>
+            <field name="context">{'default_property_id': active_id}</field>
+        </record>
+    
+        <!--</record>-->
+    </data>
+</odoo>

@@ -161,7 +161,7 @@ for rec in records:
     </record>
 
     <record id="estate_property_view_kanban" model="ir.ui.view">
-        <field name="name">estate.property.kanban</field>
+        <field name="name">estate.property.kanban,graph</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id">
@@ -209,5 +209,19 @@ for rec in records:
     </record>
 
 
+    <record id="" model="ir.ui.view">
+        <field name="name">estate.property.graph</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <graph string="Property Analysis" type="bar">
+                <field name="tag_ids" type="row"/>
+
+                <field name="expected_price" type="measure"/>
+                <field name="selling_price" type="measure"/>
+                <field name="best_price" type="measure"/>
+                
+            </graph>
+        </field>
+    </record>
 
 </odoo>

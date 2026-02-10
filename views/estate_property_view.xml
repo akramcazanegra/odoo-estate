@@ -209,7 +209,7 @@ for rec in records:
     </record>
 
 
-    <record id="" model="ir.ui.view">
+    <record id="estate_property_view_graph" model="ir.ui.view">
         <field name="name">estate.property.graph</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">

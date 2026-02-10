@@ -25,7 +25,7 @@ class RealEstate(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(default=fields.Date.today)
     expected_price = fields.Float()
-    best_offer = fields.Float(compute="_compute_best_offer")
+    best_offer = fields.Float(compute="_compute_best_offer",store=True, group_operator="max" )
     selling_price = fields.Float()
     description = fields.Text()
     bedrooms = fields.Integer()

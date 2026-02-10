@@ -176,9 +176,11 @@ for rec in records:
                                 <div>
                                     Expected Price: <field name="expected_price"/>
                                 </div>
-                                <div t-if="record.state.raw_value == 'offer_accepted'">
-                                    <span>Selling Price: </span>
-                                    <field name="selling_price"/>
+                                <div>
+                                    <field name="state"/> 
+                                </div>
+                                <div>
+                                    Postcode: <field name="postcode"/>
                                 </div>
                                 <div>
                                     <field name="tag_ids" widget="many2many_tags"/>

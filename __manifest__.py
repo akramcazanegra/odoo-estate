@@ -13,6 +13,7 @@
         # Security Files
        "security/res_groups.xml",
        "security/ir.model.access.csv",
+       "security/ir_rule.xml",
         #Views
         
         "views/estate_property_view.xml",

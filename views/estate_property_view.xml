@@ -101,6 +101,8 @@
                             </page>
                         </notebook>
                     </sheet>
+                    <chatter>
+                    </chatter>
                 </form>
 
         </field>

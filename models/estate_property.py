@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 class RealEstate(models.Model):
     _name = "estate.property"
     _description = "Real Estate Model"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(required=True)
     price = fields.Float()

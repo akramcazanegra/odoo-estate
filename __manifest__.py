@@ -7,7 +7,8 @@
     "license": "LGPL-3",
     "depends": [
         "base",
-        "crm"
+        "crm",
+        "mail", 
     ],
     "data": [
         # Security Files

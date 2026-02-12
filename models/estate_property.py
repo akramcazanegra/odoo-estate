@@ -98,6 +98,10 @@ class RealEstate(models.Model):
             user_id=self.env.user.id 
         ) #
 
+        # 2. Sift le-mail automatique (Hadchi li t-zad daba)
+        template = self.env.ref('estate.email_template_property_sold')
+        template.send_mail(self.id, force_send=True)
+
         return True
 
 

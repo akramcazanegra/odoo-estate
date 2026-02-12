@@ -14,6 +14,7 @@
         # Security Files
        "security/res_groups.xml",
        "security/ir.model.access.csv",
+       "data/mail_template_data.xml",
        "security/ir_rule.xml",
         #Views
         

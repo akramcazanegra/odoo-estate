@@ -90,6 +90,16 @@ class RealEstate(models.Model):
 
         self.state = "sold"
 
+        # 2. Creeyi l-Activity (Had le-star bou7dou li t-zad)
+        self.activity_schedule(
+            'mail.mail_activity_data_todo', 
+            summary=_('Contact the buyer'), 
+            note=_('Property sold! Follow up on the contract.'),
+            user_id=self.env.user.id 
+        ) #
+
+        return True
+
 
    # @api.constrains("selling_price")
     #def _check_constraint(self):

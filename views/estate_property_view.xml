@@ -229,7 +229,8 @@ for rec in records:
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">estate.report_property_template</field>
         <field name="report_file">estate.report_property_template</field>
-        <field name="binding_model_id" eval="False"/>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <!--<field name="binding_type">report</field>-->
     </record>
 
     <template id="report_property_template">

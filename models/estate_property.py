@@ -158,4 +158,25 @@ class RealEstate(models.Model):
             "context": context,
         }
 
-   
+    def action_send_mail(self):
+        # Ma-ndirouch ensure_one() 7it records i-qdrou i-kounu bezzaf
+        template_id = self.env.ref('estate.email_template_property_sold').id
+        
+        # Ila khtariti ghi villa we7da, 7el le-wizard 3adi
+        # Ila khtariti bezzaf, Odoo ghadi i-sift l-mail l ga3 l-ids m-stfin
+        return {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': {
+                'default_model': 'estate.property',
+                'default_res_ids': self.ids, # Hna khassha t-koun self.ids (plural)
+                'default_template_id': template_id,
+                'default_composition_mode': 'mass_mail', # 'mass_mail' hiya l-sir bach i-sift l-kolchi
+                'force_email': True,
+            },
+        }
+    

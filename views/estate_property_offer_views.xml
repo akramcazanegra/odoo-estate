@@ -4,7 +4,7 @@
             <field name="name">estate.property.offer.view.list</field>
             <field name="model">estate.property.offer</field>
             <field name="arch" type="xml">
-                <list  editable="bottom">  
+                <list  editable="bottom" decoration-danger="context.get('is_danger_price')">
                     <field name="price"/>
                     <field name="status" />
                     <field name="partner_id"/>

@@ -127,7 +127,10 @@ class RealEstate(models.Model):
         context = {'default_property_id': self.id}
         # Task: Ila kan Admin, default price > 5000
         if self.env.user.has_group('base.group_system'):
-           #context.update({'default_price': 5001})
+           context.update({'default_price': 5001})
+
+        if self.best_offer > 5000:
+           context.update({'is_danger_price': True})
             
         return {
             "name": _("Property Offers"),

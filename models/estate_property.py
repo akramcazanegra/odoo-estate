@@ -41,6 +41,7 @@ class RealEstate(models.Model):
     property_type_id = fields.Many2one("estate.property.type")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     tag_ids = fields.Many2many("estate.property.tag")
+    offer_count = fields.Integer(compute="_compute_offer_count")
 
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
@@ -115,3 +116,26 @@ class RealEstate(models.Model):
         
         remaining = 0 if len(records) < limit else self.search_count(domain)
         self.env['ir.cron']._commit_progress(len(records), remaining=remaining)
+
+    @api.depends('offer_ids')
+    def _compute_offer_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)
+
+    # 2. La fonction dial le Smart Button
+    def action_open_offers(self):
+        context = {'default_property_id': self.id}
+        # Task: Ila kan Admin, default price > 5000
+        if self.env.user.has_group('base.group_system'):
+           #context.update({'default_price': 5001})
+            
+        return {
+            "name": _("Property Offers"),
+            "type": "ir.actions.act_window",
+            "res_model": "estate.property.offer",
+            "view_mode": "list,form",
+            "domain": [("property_id", "=", self.id)],
+            "context": context,
+        }
+
+   

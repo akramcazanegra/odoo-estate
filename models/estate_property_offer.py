@@ -44,6 +44,7 @@ class EstateOffer(models.Model):
             #offer.status = "refused"
             offer.write({'status': 'refused'})
 
+ 
     
   
 

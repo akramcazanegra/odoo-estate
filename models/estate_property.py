@@ -8,7 +8,7 @@ class RealEstate(models.Model):
     _description = "Real Estate Model"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, tracking=True)
     price = fields.Float()
     active = fields.Boolean(default=True)
     state = fields.Selection(
@@ -18,16 +18,18 @@ class RealEstate(models.Model):
             ("accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("canceled", "Canceled"),
+            
         ],
         required=True,
         copy=False,
         default="new",
+        tracking=True,
     )
     postcode = fields.Char()
     date_availability = fields.Date(default=fields.Date.today)
-    expected_price = fields.Float()
+    expected_price = fields.Float(tracking=True)
     best_offer = fields.Float(compute="_compute_best_offer",store=True, group_operator="max" )
-    selling_price = fields.Float()
+    selling_price = fields.Float(tracking=True)
     description = fields.Text()
     bedrooms = fields.Integer()
     living_area = fields.Integer()

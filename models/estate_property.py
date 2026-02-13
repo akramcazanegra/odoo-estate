@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.translate import _
 from dateutil.relativedelta import relativedelta
+from odoo import tools
 
 class RealEstate(models.Model):
     _name = "estate.property"
@@ -137,13 +138,21 @@ class RealEstate(models.Model):
     @api.depends('offer_ids')
     def _compute_offer_count(self):
         for record in self:
-            record.offer_count = len(record.offer_ids)
+            # Ila kan admin, n-7sebou ghir l-offres li faytin 5000
+            if self.env.user.has_group('base.group_system'):
+                # Hna l-count ghadi i-walli i-7seb ghir dakchi li ghadi i-ban f l-lista
+                record.offer_count = len(record.offer_ids.filtered(lambda o: o.price > 5000))
+            else:
+                record.offer_count = len(record.offer_ids)
 
     # 2. La fonction dial le Smart Button
     def action_open_offers(self):
-        context = {'default_property_id': self.id}
+        domain = [("property_id", "=", self.id)]
+        context = dict(self.env.context, default_property_id=self.id)
+        
         # Task: Ila kan Admin, default price > 5000
         if self.env.user.has_group('base.group_system'):
+           domain.append(('price', '>', 5000))
            context.update({'default_price': 5001})
 
         if self.best_offer > 5000:
@@ -154,16 +163,19 @@ class RealEstate(models.Model):
             "type": "ir.actions.act_window",
             "res_model": "estate.property.offer",
             "view_mode": "list,form",
-            "domain": [("property_id", "=", self.id)],
+            "domain": domain,
             "context": context,
         }
 
-    def action_send_mail(self):
-        # Ma-ndirouch ensure_one() 7it records i-qdrou i-kounu bezzaf
-        template_id = self.env.ref('estate.email_template_property_sold').id
+
+
+    
+    
+    def action_send_sold_mail(self):
+        self.ensure_one()
+        # كنجيبو الـ ID ديال الـ Template اللي صايبتي
+        template_id = self.env.ref('your_module_name.email_template_property_sold').id
         
-        # Ila khtariti ghi villa we7da, 7el le-wizard 3adi
-        # Ila khtariti bezzaf, Odoo ghadi i-sift l-mail l ga3 l-ids m-stfin
         return {
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
@@ -173,10 +185,8 @@ class RealEstate(models.Model):
             'target': 'new',
             'context': {
                 'default_model': 'estate.property',
-                'default_res_ids': self.ids, # Hna khassha t-koun self.ids (plural)
-                'default_template_id': template_id,
-                'default_composition_mode': 'mass_mail', # 'mass_mail' hiya l-sir bach i-sift l-kolchi
+                'default_res_ids': self.ids,
+                'default_template_id': template_id, # هنا فين كنقولو ليه جيب هاد الـ Template بضبط
                 'force_email': True,
             },
-        }
-    
+    }
